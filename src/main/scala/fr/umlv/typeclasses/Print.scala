@@ -16,23 +16,27 @@ object Print {
 
     implicit val DirectionShow = new Show[Direction] {
       def show(d : Direction) : String = d match {
-        case North => "N"
-        case East => "E"
-        case South => "S"
-        case _ => "W"
+        case North => "North"
+        case East => "East"
+        case South => "South"
+        case _ => "West"
       }
     }
 
     implicit val MowerShow = new Show[Mower] {
-      def show(mower : Mower) : String = Print.print(mower.position) + " " + Print.print(mower.direction)
+      def show(mower : Mower) : String = Print.print(mower.position) + " - " + Print.print(mower.direction)
     }
 
     implicit val GardenShow = new Show[Garden] {
-      def show(garden : Garden) : String = garden.mowers.map(m => Print.print(Mower)).mkString("\n")
+      def show(garden : Garden) : String = garden.mowers.map(m =>
+        m match {
+          case Left(_) => ""
+          case Right(mower) => Print.print(mower)
+        }).mkString("\n")
     }
   }
 
 
-  def print[T](t : T)(ev : Show[T]) : String = ev.show(t)
+  def print[T](t : T)(implicit ev : Show[T]) : String = ev.show(t)
 
 }

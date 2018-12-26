@@ -29,11 +29,11 @@ case object West extends Direction {
 
 
   object Direction {
-    def apply(s: String): Direction = s match {
-      case "N" => North;
-      case "E" => East;
-      case "S" => South;
-      case "W" => West;
-
+    def apply(s: String): Option[Direction] = s match {
+      case "N" => Some(North);
+      case "E" => Some(East);
+      case "S" => Some(South);
+      case "W" => Some(West);
+      case _ => None
     }
   }
