@@ -1,7 +1,21 @@
 package fr.umlv.model
 
+/** A trait used to represent the four cardinal directions: North, East, South and West
+  *
+  */
 sealed trait Direction {
+
+  /** Gets the next cardinal direction from the right
+    *
+    * @return   the next cardinal direction from the right
+    */
   def nextFromRight() : Direction
+
+
+  /** Gets the next cardinal direction from the left
+    *
+    * @return   the next cardinal direction from the left
+    */
   def nextFromLeft() : Direction
 }
 
@@ -29,6 +43,13 @@ case object West extends Direction {
 
 
   object Direction {
+
+    /** Gets the cardinal direction corresponding to a String.
+      *
+      * @param s    the string corresponding to a cardinal direction
+      * @return     An option containing the cardinal direction if the string corresponds to any of the direction
+      *             None otherwise
+      */
     def apply(s: String): Option[Direction] = s match {
       case "N" => Some(North);
       case "E" => Some(East);

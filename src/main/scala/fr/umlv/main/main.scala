@@ -13,7 +13,7 @@ import scala.util.{Failure, Success, Try}
 object main extends App {
 
   val logger = Logger("Main Log")
-  val filePath = "resources/example.txt"
+  val filePath = if (!args.isEmpty) "resources/"+ args(0) else "resources/example.txt"
 
   val tryReadFile = Try(Source.fromFile(filePath)) match {
     case Success(f) => f.getLines().toList
@@ -45,5 +45,8 @@ object main extends App {
   val linesToProcess = mowerLines.sliding(2, 2).toList.map(l => (l(0).split(" ").toList, l(1).toList.map(s => s.toString)))
 
   val endGarden = Parser.processMowerList(linesToProcess, garden, garden, 1)
-  println(Print.print(endGarden))
+
+  val gardenString = Print.print(endGarden)
+  logger.info("\n" + gardenString)
+
 }
