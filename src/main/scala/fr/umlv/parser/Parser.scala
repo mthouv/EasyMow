@@ -7,11 +7,10 @@ import scala.util.{Failure, Success, Try}
 
 object Parser {
 
-  val logger = Logger("log")
+  val logger = Logger("Parser Log")
 
 
   def parseGarden(args : List[String]) : Option[Garden] = {
-    //logger.info("Creating garden")
     return Try(Garden(Coordinate(args(0).toInt, args(1).toInt), List())).toOption
   }
 
@@ -42,9 +41,11 @@ object Parser {
   }
 
 
-  def processMowerList(list : List[(List[String], List[String])], garden : Garden, accumulator : Garden) : Garden = {
+  def processMowerList(list : List[(List[String], List[String])], garden : Garden, accumulator : Garden, step : Int) : Garden = {
     list match {
-      case x :: xs => processMowerList(xs, garden, accumulator.addMower(processMower(x._1, x._2, accumulator)))
+      case x :: xs =>
+        logger.info("Processing mower number " + step)
+        processMowerList(xs, garden, accumulator.addMower(processMower(x._1, x._2, accumulator)), step + 1)
       case Nil => accumulator
     }
   }

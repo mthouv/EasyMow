@@ -175,7 +175,7 @@ class ParserSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
 
     val finalGarden = Garden(Coordinate(100, 100), List(Right(m3), Right(m2), Right(m1)))
 
-    Parser.processMowerList(list, garden, garden) should be(finalGarden)
+    Parser.processMowerList(list, garden, garden, 1) should be(finalGarden)
   }
 
 
@@ -194,7 +194,7 @@ class ParserSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
 
     val finalGarden = Garden(Coordinate(100, 100), List(Right(m), Left(InvalidMower), Left(InvalidMower), Left(InvalidMower)))
 
-    Parser.processMowerList(list, garden, garden) should be(finalGarden)
+    Parser.processMowerList(list, garden, garden, 1) should be(finalGarden)
   }
 
 }
