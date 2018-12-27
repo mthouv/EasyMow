@@ -14,9 +14,10 @@ class DirectionSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyC
     Direction("S") should be(Some(South))
     Direction("W") should be(Some(West))
 
-    val invalidCommands = Gen.oneOf("A","B", "C","D","F","G","H","I","J","K","L","M","O","P","Q","R","T","U","V","X","Y","Z")
+    val validDirections = List("N", "E", "S", "W")
+    val invalidDirections = Gen.alphaStr suchThat (s => !validDirections.contains(s))
 
-      forAll(invalidCommands) { x =>
+      forAll(invalidDirections) { x =>
         Direction(x) should be(None)
       }
     }

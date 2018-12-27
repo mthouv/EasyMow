@@ -8,11 +8,11 @@ class GardenSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
 
   "Garden isValidCoordinate" should "return true when the coordinates are within the range of the garden" in {
 
-    val garden = Garden(Coordinate(10,10), List())
+    val garden = Garden(Coordinate(100,100), List())
 
     val allCoordinates = for {
-      n <- Gen.choose(0, 10)
-      m <- Gen.choose(0,10)
+      n <- Gen.choose(0, 100)
+      m <- Gen.choose(0,100)
     } yield (n,m)
 
     forAll(allCoordinates) { case (n, m) =>
@@ -22,11 +22,11 @@ class GardenSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
 
 
   "Garden isValidCoordinate" should "return false when the coordinates are not within the range of the garden" in {
-    val garden = Garden(Coordinate(10,10), List())
+    val garden = Garden(Coordinate(1000,1000), List())
 
     val allCoordinates = for {
-      n <- Gen.choose(-1000, 1000) suchThat (x => x < 0 || x > 10)
-      m <- Gen.choose(-1000,1000) suchThat (x => x < 0 || x > 10)
+      n <- Gen.choose(Int.MinValue, Int.MaxValue) suchThat (x => x < 0 || x > 1000)
+      m <- Gen.choose(Int.MinValue,Int.MaxValue) suchThat (x => x < 0 || x > 1000)
     } yield (n,m)
 
     forAll(allCoordinates) { case (n, m) =>

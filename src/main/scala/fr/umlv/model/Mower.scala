@@ -35,9 +35,9 @@ case class Mower(position: Coordinate, direction: Direction) {
 
 object Mower {
 
-  def multipleUpdates(actions: List[String], garden: Garden, accumulator: Mower) : Mower = {
+  def processUpdates(actions: List[String], garden: Garden, accumulator: Mower) : Mower = {
     actions match {
-      case x :: xs => multipleUpdates(xs, garden, accumulator.update (x, garden) )
+      case x :: xs => processUpdates(xs, garden, accumulator.update (x, garden) )
       case _ => accumulator
     }
   }

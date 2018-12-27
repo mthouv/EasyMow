@@ -9,7 +9,10 @@ case class Garden(topRightPosition : Coordinate, mowers : List[Either[InvalidMow
   }
 
   def addMower(mower : Either[InvalidMower.type, Mower]): Garden = {
-      Garden(this.topRightPosition, mower :: this.mowers)
+    mower match {
+      case Right(m) if (!this.isInvalidCoordinate(m.position)) => this
+      case _ => Garden(this.topRightPosition, mower :: this.mowers)
+    }
   }
 }
 

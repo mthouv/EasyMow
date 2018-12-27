@@ -27,16 +27,24 @@ object Print {
       def show(mower : Mower) : String = Print.print(mower.position) + " - " + Print.print(mower.direction)
     }
 
+
     implicit val GardenShow = new Show[Garden] {
-      def show(garden : Garden) : String = garden.mowers.map(m =>
-        m match {
-          case Left(_) => ""
-          case Right(mower) => Print.print(mower)
-        }).mkString("\n")
+      def show(garden : Garden) : String = {
+        val firstLine = Print.print(garden.topRightPosition) + "\n"
+
+        val mowersStr = garden.mowers.reverse.map(m =>
+            m match {
+              case Left(_) => ""
+              case Right(mower) => Print.print(mower)
+            })
+          .filter(s => s!= "")
+          .mkString("\n")
+
+        firstLine + mowersStr
+      }
     }
   }
 
 
   def print[T](t : T)(implicit ev : Show[T]) : String = ev.show(t)
-
 }
