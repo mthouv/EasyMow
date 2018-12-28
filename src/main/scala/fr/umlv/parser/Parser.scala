@@ -22,7 +22,11 @@ object Parser {
     *               None otherwise
     */
   def parseGarden(args : List[String]) : Option[Garden] = {
-    Try(Garden(Coordinate(args(0).toInt, args(1).toInt), List())).toOption
+    val optGarden = Try(Garden(Coordinate(args(0).toInt, args(1).toInt), List())).toOption
+    optGarden match {
+      case Some(g) if g.topRightPosition.x >= 0 && g.topRightPosition.y >= 0 => Some(g)
+      case _ => None
+    }
   }
 
 
