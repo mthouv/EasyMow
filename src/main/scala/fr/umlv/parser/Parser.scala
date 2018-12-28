@@ -51,16 +51,15 @@ object Parser {
     *                            its position and its cardinal direction)
     * @param actions             the list containing the actions to be performed by the initial mower
     * @param garden              the garden on which the mower will be updated
-    * @return                    either an invalid mower (if the creation has failed or the initial mower wasn't within
-    *                            the garden) or the final mower after all the actions have been executed
+    * @return                    either a String describing an error (if the creation has failed or the initial mower
+    *                            wasn't within the garden) or the final mower after all the actions have been executed
     */
-  def processMower(startParameters : List[String], actions : List[String], garden : Garden) : Either[InvalidMower.type , Mower] = {
+  def processMower(startParameters : List[String], actions : List[String], garden : Garden) : Either[String , Mower] = {
     val mower = parseMower(startParameters)
     mower match {
       case Some(m) if garden.isValidCoordinate(m.position) => Right(Mower.processUpdates(actions, garden, m))
-      case _ =>
-        logger.warn("Invalid Mower detected")
-        Left(InvalidMower)
+      case Some(_) =>   Left("Mower's position is outside of the garden")
+      case _ =>         Left("Creation parameters for the mowers are invalid")
     }
   }
 
@@ -69,16 +68,15 @@ object Parser {
     *
     * @param list             a list of 2-tuples that each contains a list of starting parameters and a list of actions
     *                         to be performed
-    * @param garden           the garden in which the mower will be processed
     * @param accumulator      an accumulator to store the intermediary gardens after each processing of a mower
     * @param step             an indicator to know which mower is being processed (used for logging purposes)
     * @return                 the final garden containing all the processed mowers
     */
-  def processMowerList(list : List[(List[String], List[String])], garden : Garden, accumulator : Garden, step : Int) : Garden = {
+  def processMowerList(list : List[(List[String], List[String])], accumulator : Garden, step : Int) : Garden = {
     list match {
       case x :: xs =>
         logger.info("Processing mower number " + step)
-        processMowerList(xs, garden, accumulator.addMower(processMower(x._1, x._2, accumulator)), step + 1)
+        processMowerList(xs, accumulator.addMower(processMower(x._1, x._2, accumulator)), step + 1)
       case Nil => accumulator
     }
   }

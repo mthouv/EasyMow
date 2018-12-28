@@ -57,7 +57,7 @@ class PrintSpec extends  FlatSpec with Matchers with GeneratorDrivenPropertyChec
     val m4 = Mower(Coordinate(9,9), East)
     val m5 = Mower(Coordinate(42, 42), West)
 
-    val finalGarden = garden.addMower(Right(m1)).addMower(Right(m2)).addMower(Left(InvalidMower)).addMower(Right(m3)).addMower(Right(m4))
+    val finalGarden = garden.addMower(Right(m1)).addMower(Right(m2)).addMower(Left("AAAAAA")).addMower(Right(m3)).addMower(Right(m4))
 
     val expectedStr = "10 10\n" + Print.print((m1)) + "\n" + Print.print((m2)) + "\n" + Print.print((m3)) + "\n" + Print.print((m4))
     Print.print(finalGarden) should be(expectedStr)

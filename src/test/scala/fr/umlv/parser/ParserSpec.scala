@@ -49,8 +49,6 @@ class ParserSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
 
 
   "Parser parserMower" should "return None when the direction is invalid" in {
-
-    //val invalidDirections = Gen.oneOf("A","B", "C","D","F","G","H","I","J","K","L","M","O","P","Q","R","T","U","V","X","Y","Z")
     val validDirections = List("N", "E", "S", "W")
     val invalidDirections = Gen.alphaStr suchThat (s => !validDirections.contains(s))
 
@@ -102,17 +100,17 @@ class ParserSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
   }
 
 
-  "Parser processMower" should "return a Left[InvalidMower] when starting parameters are not complete " in {
+  "Parser processMower" should "return a Left when starting parameters are not complete " in {
 
     val garden = Garden(Coordinate(10, 10), List())
     val startParameters = List("3", "N")
     val actions1 = List("A", "A", "A")
 
-    Parser.processMower(startParameters, actions1, garden) should be(Left(InvalidMower))
+    Parser.processMower(startParameters, actions1, garden) should be(Left("Creation parameters for the mowers are invalid"))
   }
 
 
-  "Parser processMower" should "return a Left(InvalidMower) when direction in startingParameters is invalid" in {
+  "Parser processMower" should "return a Left when direction in startingParameters is invalid" in {
 
     val garden = Garden(Coordinate(10,10), List())
     val actions = List("A")
@@ -121,11 +119,11 @@ class ParserSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
 
     forAll(invalidDirections) { direction =>
       val l = List("0", "0", direction)
-      Parser.processMower(l, actions, garden) should be(Left(InvalidMower))
+      Parser.processMower(l, actions, garden) should be(Left("Creation parameters for the mowers are invalid"))
     }
   }
 
-  "Parser processMower" should "return a Left(InvalidMower) when coordinates in startingParameters are invalid" in {
+  "Parser processMower" should "return a Left when coordinates in startingParameters are invalid" in {
     val garden = Garden(Coordinate(10,10), List())
     val actions = List("A")
 
@@ -134,12 +132,12 @@ class ParserSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
 
     forAll(allAlphaStr1, allAlphaStr2) { (x, y) =>
       val l = List(x, y, "N")
-      Parser.processMower(l, actions, garden) should be(Left(InvalidMower))
+      Parser.processMower(l, actions, garden) should be(Left("Creation parameters for the mowers are invalid"))
 
     }
   }
 
-  "Parser processMower" should "return a Left(InvalidMower) when initialized mower isn't in the garden" in {
+  "Parser processMower" should "return a Left when initialized mower isn't in the garden" in {
     val garden = Garden(Coordinate(100, 100), List())
     val actions = List("A")
 
@@ -148,18 +146,18 @@ class ParserSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
 
     forAll(genCoordinates1, genCoordinates2) { (n, m) =>
       val l = List("0", n.toString, "N")
-      Parser.processMower(l, actions, garden) should be(Left(InvalidMower))
+      Parser.processMower(l, actions, garden) should be(Left("Mower's position is outside of the garden"))
 
       val ll = List(n.toString, "0", "N")
-      Parser.processMower(ll, actions, garden) should be(Left(InvalidMower))
+      Parser.processMower(ll, actions, garden) should be(Left("Mower's position is outside of the garden"))
 
       val lll = List(n.toString, m.toString, "N")
-      Parser.processMower(lll, actions, garden) should be(Left(InvalidMower))
+      Parser.processMower(lll, actions, garden) should be(Left("Mower's position is outside of the garden"))
     }
   }
 
 
-  "Parser processMowerList" should "return a garden with the Right(Mower)" in {
+  "Parser processMowerList" should "return a garden with all the mowers" in {
 
     val garden = Garden(Coordinate(100, 100), List())
 
@@ -173,13 +171,13 @@ class ParserSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
     val m2 = Mower(Coordinate(43, 42), West)
     val m3 = Mower(Coordinate(1, 49), East)
 
-    val finalGarden = Garden(Coordinate(100, 100), List(Right(m3), Right(m2), Right(m1)))
+    val finalGarden = Garden(Coordinate(100, 100), List(m3, m2, m1))
 
-    Parser.processMowerList(list, garden, garden, 1) should be(finalGarden)
+    Parser.processMowerList(list, garden, 1) should be(finalGarden)
   }
 
 
-  "Parser processMowerList" should "add Right(Mower) and Left(InvalidMower)" in {
+  "Parser processMowerList" should "only add Right(Mower) to the garden" in {
 
     val garden = Garden(Coordinate(100, 100), List())
 
@@ -192,9 +190,9 @@ class ParserSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
 
     val m = Mower(Coordinate(1, 42), West)
 
-    val finalGarden = Garden(Coordinate(100, 100), List(Right(m), Left(InvalidMower), Left(InvalidMower), Left(InvalidMower)))
+    val finalGarden = Garden(Coordinate(100, 100), List(m))
 
-    Parser.processMowerList(list, garden, garden, 1) should be(finalGarden)
+    Parser.processMowerList(list, garden, 1) should be(finalGarden)
   }
 
 }

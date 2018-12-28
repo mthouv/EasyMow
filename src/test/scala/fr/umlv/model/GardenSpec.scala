@@ -40,11 +40,11 @@ class GardenSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
 
     val garden = Garden(Coordinate(10,10), List())
 
-    val m1 = Right(Mower(Coordinate(2,2), North))
-    val m2 = Right(Mower(Coordinate(4,2), East))
-    val m3 = Right(Mower(Coordinate(0,2), South))
+    val m1 = Mower(Coordinate(2,2), North)
+    val m2 = Mower(Coordinate(4,2), East)
+    val m3 = Mower(Coordinate(0,2), South)
 
-    val finalGarden = garden.addMower(m1).addMower(m2).addMower(m3)
+    val finalGarden = garden.addMower(Right(m1)).addMower(Right(m2)).addMower(Right(m3))
 
     finalGarden.mowers(0) should be(m3)
     finalGarden.mowers(1) should be(m2)
@@ -52,21 +52,19 @@ class GardenSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
   }
 
 
-  "Garden addMower" should "add valid mowers and invalidMowers to the garden" in {
+  "Garden addMower" should "only add valid mowers to the garden" in {
 
     val garden = Garden(Coordinate(10,10), List())
 
-    val m1 = Right(Mower(Coordinate(2,2), North))
-    val m2 = Right(Mower(Coordinate(4,2), East))
-    val m3 = Right(Mower(Coordinate(0,2), South))
+    val m1 = Mower(Coordinate(2,2), North)
+    val m2 = Mower(Coordinate(4,2), East)
+    val m3 = Mower(Coordinate(0,2), South)
 
-    val finalGarden = garden.addMower(m1).addMower(Left(InvalidMower)).addMower(m2).addMower(m3).addMower(Left(InvalidMower))
+    val finalGarden = garden.addMower(Right(m1)).addMower(Left("aaaaaaaaa")).addMower(Right(m2)).addMower(Right(m3)).addMower(Left("BBBBBBBBB"))
 
-    finalGarden.mowers(0) should be(Left(InvalidMower))
-    finalGarden.mowers(1) should be(m3)
-    finalGarden.mowers(2) should be(m2)
-    finalGarden.mowers(3) should be(Left(InvalidMower))
-    finalGarden.mowers(4) should be(m1)
+    finalGarden.mowers(0) should be(m3)
+    finalGarden.mowers(1) should be(m2)
+    finalGarden.mowers(2) should be(m1)
   }
 
 }

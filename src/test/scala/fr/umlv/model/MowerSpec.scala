@@ -77,7 +77,6 @@ class MowerSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyCheck
     m3 should be(Mower(m2.position, West))
     m3.update("A", garden) should be(Mower(Coordinate(1,2), West))
 
-    //val invalidActions = Gen.oneOf("B", "C", "E","F","H","I","J","K","L","M","N","O","P","Q","R","S","T","U","V","W","X","Y","Z")
     val validActions = List("A", "G", "D")
     val invalidActions = Gen.alphaStr suchThat (s => !validActions.contains(s))
     forAll(invalidActions) { x =>

@@ -4,21 +4,14 @@ import fr.umlv.typeclasses.Print
 import grizzled.slf4j.Logger
 
 
-/** Object used to represent an invalid mower in the garden: either the parameters passed to create it were invalid
-  * or the starting position was not within the garden.
-  *
-  */
-final case object InvalidMower
-
 
 /** Class used to represent the garden on which the mowers will move.
   *
   * @param topRightPosition   the coordinates of the top right position in the garden
   *                           (the coordinates of the bottom left position being (0, 0)
-  * @param mowers             a list of either invalid mowers or basic mowers
+  * @param mowers             the list of mowers on the garden
   */
-case class Garden(topRightPosition : Coordinate, mowers : List[Either[InvalidMower.type, Mower]]) {
-
+case class Garden(topRightPosition : Coordinate, mowers : List[Mower]) {
 
   val logger = Logger("Garden Log")
 
@@ -30,10 +23,7 @@ case class Garden(topRightPosition : Coordinate, mowers : List[Either[InvalidMow
     * @return         a boolean indicating if the position is valid or not
     */
   def isValidCoordinate(coord : Coordinate): Boolean = {
-    val isOccupied = this.mowers.exists(e => e match {
-      case Right(m) => m.position == coord
-      case _ => false
-    })
+    val isOccupied = this.mowers.exists(m => m.position == coord)
     if (isOccupied) {
       logger.info("Collision detected on position (" + Print.print(coord) + ")")
       false
@@ -46,14 +36,15 @@ case class Garden(topRightPosition : Coordinate, mowers : List[Either[InvalidMow
 
   /** Adds a new mower to the garden.
     *
-    * @param mower    the mower to be added. It can either be an invalid mower or a
-    *                 basic mower
+    * @param mower    the mower to be added. It can either be a String describing an error or the mower to be added
     * @return         the new garden with the added mower
     */
-  def addMower(mower : Either[InvalidMower.type, Mower]): Garden = {
+  def addMower(mower : Either[String, Mower]): Garden = {
     mower match {
-      case Right(m) if !this.isValidCoordinate(m.position) => this
-      case _ => Garden(this.topRightPosition, mower :: this.mowers)
+      case Right(m)  => Garden(this.topRightPosition, m :: this.mowers)
+      case Left(msg) =>
+        logger.warn(msg)
+        this
     }
   }
 }

@@ -70,10 +70,7 @@ object Draw {
       g.drawLine(j * positionSize, 0, j * positionSize, height)
     }
 
-    garden.mowers.foreach(x => x match {
-      case Right(m) => drawMower(m, garden.topRightPosition.y, g)
-      case _ => Unit
-    })
+    garden.mowers.foreach(mower => drawMower(mower, garden.topRightPosition.y, g))
   }
 
 
