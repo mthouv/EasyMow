@@ -43,7 +43,7 @@ case class Mower(position: Coordinate, direction: Direction) {
       case South => Coordinate(this.position.x, this.position.y - 1)
       case _ => Coordinate(this.position.x - 1, this.position.y)
     }
-    if (garden.isInvalidCoordinate(newCoord)) Mower(newCoord, this.direction)
+    if (garden.isValidCoordinate(newCoord)) Mower(newCoord, this.direction)
     else this
   }
 

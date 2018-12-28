@@ -57,7 +57,7 @@ object Parser {
   def processMower(startParameters : List[String], actions : List[String], garden : Garden) : Either[InvalidMower.type , Mower] = {
     val mower = parseMower(startParameters)
     mower match {
-      case Some(m) if garden.isInvalidCoordinate(m.position) => Right(Mower.processUpdates(actions, garden, m))
+      case Some(m) if garden.isValidCoordinate(m.position) => Right(Mower.processUpdates(actions, garden, m))
       case _ =>
         logger.warn("Invalid Mower detected")
         Left(InvalidMower)

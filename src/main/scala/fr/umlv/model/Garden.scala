@@ -29,7 +29,7 @@ case class Garden(topRightPosition : Coordinate, mowers : List[Either[InvalidMow
     * @param coord    the coordinates of the position to be tested
     * @return         a boolean indicating if the position is valid or not
     */
-  def isInvalidCoordinate(coord : Coordinate): Boolean = {
+  def isValidCoordinate(coord : Coordinate): Boolean = {
     val isOccupied = this.mowers.exists(e => e match {
       case Right(m) => m.position == coord
       case _ => false
@@ -52,7 +52,7 @@ case class Garden(topRightPosition : Coordinate, mowers : List[Either[InvalidMow
     */
   def addMower(mower : Either[InvalidMower.type, Mower]): Garden = {
     mower match {
-      case Right(m) if !this.isInvalidCoordinate(m.position) => this
+      case Right(m) if !this.isValidCoordinate(m.position) => this
       case _ => Garden(this.topRightPosition, mower :: this.mowers)
     }
   }

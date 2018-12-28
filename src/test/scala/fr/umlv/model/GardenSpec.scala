@@ -16,7 +16,7 @@ class GardenSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
     } yield (n,m)
 
     forAll(allCoordinates) { case (n, m) =>
-        garden.isInvalidCoordinate(Coordinate(n, m)) should be(true)
+        garden.isValidCoordinate(Coordinate(n, m)) should be(true)
     }
   }
 
@@ -30,7 +30,7 @@ class GardenSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
     } yield (n,m)
 
     forAll(allCoordinates) { case (n, m) =>
-      garden.isInvalidCoordinate(Coordinate(n, m)) should be(false)
+      garden.isValidCoordinate(Coordinate(n, m)) should be(false)
     }
 
   }
