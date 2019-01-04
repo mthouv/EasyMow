@@ -15,7 +15,6 @@ class ParserSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
     val posNum1 = Gen.choose(0, Integer.MAX_VALUE)
     val posNum2 = Gen.choose(0, Integer.MAX_VALUE)
 
-
     forAll(posNum1, posNum2) { (x, y) =>
       val l = List(x.toString, y.toString)
       Parser.parseGarden(l) should be(Some(Garden(Coordinate(x, y), List())))
@@ -35,7 +34,7 @@ class ParserSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
   }
 
 
-  "Parser parserGarden" should "return None when negative coordinates" in {
+  "Parser parserGarden" should "return None when passing negative coordinates" in {
 
     val negNum1 = Gen.choose(Integer.MIN_VALUE, -1)
     val negNum2 = Gen.choose(Integer.MIN_VALUE, -1)

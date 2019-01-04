@@ -8,8 +8,7 @@ import javax.swing.{JComponent, JFrame}
 
 object Draw {
 
-  val positionSize = 80
-  val circleRadius = 15
+  val windowMaxSize = 600
 
 
   /** Draws a mower in a graphic context.
@@ -20,9 +19,10 @@ object Draw {
     *                       top left corner (meaning the ordinates are reversed) whereas our origin point is the bottom left corner
     * @param g              the graphic context in which we will draw
     */
-  def drawMower(mower : Mower, maxOrdinate : Int, g : Graphics) : Unit = {
+  def drawMower(mower : Mower, maxOrdinate : Int, g : Graphics, positionSize : Int) : Unit = {
     g.setColor(Color.RED)
 
+    val circleRadius = positionSize / 4
     val middleSize = positionSize / 2
     val middlePositionAbscissa = (positionSize * mower.position.x) + middleSize
     val middlePositionOrdinate = (positionSize * (maxOrdinate - mower.position.y)) + middleSize
@@ -55,7 +55,7 @@ object Draw {
     * @param garden   the garden to be drawn
     * @param g        the graphic context in which we will draw
     */
-  def drawGarden(garden : Garden, g : Graphics) : Unit = {
+  def drawGarden(garden : Garden, g : Graphics, positionSize : Int) : Unit = {
 
     val width = (garden.topRightPosition.x +1) * positionSize
     val height = (garden.topRightPosition.y +1) * positionSize
@@ -70,7 +70,7 @@ object Draw {
       g.drawLine(j * positionSize, 0, j * positionSize, height)
     }
 
-    garden.mowers.foreach(mower => drawMower(mower, garden.topRightPosition.y, g))
+    garden.mowers.foreach(mower => drawMower(mower, garden.topRightPosition.y, g, positionSize))
   }
 
 
@@ -82,6 +82,9 @@ object Draw {
   def drawWindow(garden : Garden) : Unit = {
 
     val frame = new JFrame()
+
+    val max = Integer.max(garden.topRightPosition.x, garden.topRightPosition.y)
+    val positionSize = windowMaxSize / (max + 1)
     val width = (garden.topRightPosition.x +1) * positionSize
     val height = (garden.topRightPosition.y +1) * positionSize
     frame.setSize(width, height)
@@ -101,7 +104,7 @@ object Draw {
     val g = img.createGraphics()
     g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON)
 
-    drawGarden(garden, g)
+    drawGarden(garden, g, positionSize)
 
     g.dispose()
     frame.add(area)

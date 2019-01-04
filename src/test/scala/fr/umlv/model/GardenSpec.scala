@@ -32,8 +32,24 @@ class GardenSpec extends FlatSpec with Matchers with GeneratorDrivenPropertyChec
     forAll(allCoordinates) { case (n, m) =>
       garden.isValidCoordinate(Coordinate(n, m)) should be(false)
     }
-
   }
+
+
+  "Garden isValidCoordinate" should "return false when a mower is already present on the position" in {
+    val garden = Garden(Coordinate(1000,1000), List())
+
+    val allCoordinates = for {
+      n <- Gen.choose(0, 100)
+      m <- Gen.choose(0,100)
+    } yield (n,m)
+
+    forAll(allCoordinates) { case(n, m) =>
+        val mower = Mower(Coordinate(n, m), North)
+        val gardenTmp = garden.addMower(Right(mower))
+        gardenTmp.isValidCoordinate(Coordinate(n, m)) should be(false)
+    }
+  }
+
 
 
   "Garden addMower" should "add new valid mowers to the garden" in {

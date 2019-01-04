@@ -14,7 +14,7 @@ import scala.util.{Failure, Success, Try}
 object main extends App {
 
   val logger = Logger("Main Log")
-  val filePath = if (!args.isEmpty) "resources/"+ args(0) else "resources/example.txt"
+  val filePath = if (!args.isEmpty) args(0) else "resources/example.txt"
 
   val tryReadFile = Try(Source.fromFile(filePath)) match {
     case Success(f) => f.getLines().toList
@@ -49,7 +49,6 @@ object main extends App {
 
   val gardenString = Print.print(endGarden)
   logger.info("\n" + gardenString)
-
 
   Draw.drawWindow(endGarden)
 }
