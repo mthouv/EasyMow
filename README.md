@@ -13,7 +13,7 @@ et d'entrer la commande *sbt compile*.
 
 ## Exécution
 
-Il vous faut entrer la commande *sbt run*. Il y a ensuite deux cas de figures:
+Il vous faut entrer la commande *sbt run*. Il y a ensuite deux cas de figure:
 
 * L'utilisateur peut fournir le chemin d'un fichier décrivant le jardin ainsi que
 les tondeuses.
@@ -62,10 +62,10 @@ La représentation d'une tondeuse dans notre programme, ses champs sont:
 Cette classe définit un certain nombre de méthodes permettant de mettre à jour la position ainsi que
 la direction:
 
-* __*rotateRight*__ et __*rotateLeft*__ modifient la direction à laquelle la tondeuse
+* __*rotateRight*__ et __*rotateLeft*__ modifient la direction vers laquelle la tondeuse est orientée.
 fait face.
 * __*advance*__ permet de faire avancer la tondeuse sur le jardin  d'une case dans
-la direction à laquelle elle fait face. La tondeuse avance à condition que la case soit
+la direction vers laquelle elle est orientée. La tondeuse avance à condition que la case soit
 valide c'est-à-dire qu'elle doit être à l'intérieur du jardin et ne pas être occupée
 par une autre tondeuse.
 * __*update*__ reçoit une chaîne de caractères et effectue l'action (tourner ou 
@@ -115,6 +115,7 @@ de ses éléments ne correspond pas à un entier), elle renverra *None*.
 
 
 ### Package typeclass
+----------------------
 
 Un package dédié à contenir les différents typeclasses implémentés.
 
@@ -147,16 +148,24 @@ déterminée en fonction de la largeur ou de la hauteur du jardin (on prend le m
 -------------
 
 Pour mes messages de log, j'ai eu recours à la librairie *Grizzled-SLF4J* qui est un wrapper du 
-logger java *SLF4J* plus "scala-friendly". On a accès aux fonctionnalités de base telles que 
+logger java *SLF4J* plus "scala-friendly". On a accès aux fonctionnalités habituelles telles que
 les messages d'information, d'avertissement ou même d'erreur.
+Ces messages sont émis dans différents cas de figure notamment pour:
+* Notifier des erreurs lors du parsing du fichier de description
+* Signaler une collision entre deux tondeuses
+* Indiquer que la tondeuse *n* est en cours de traitement
+* Signaler qu'une commande inconnue a été détectée
+* etc...
 
 ### Tests
 -----------
 
 J'ai réalisé différents tests unitaires pour mes méthodes en utilisant en partie
 les librairies *Scalatest* et *Scalacheck*. J'ai tenté au mieux d'avoir recours
-aux différentes fonctionnalités offertes par ces deux librairires telles que les matchers, 
+aux différentes fonctionnalités offertes par ces deux librairies telles que les matchers,
 les générateurs, etc...
+
+
 
 
 

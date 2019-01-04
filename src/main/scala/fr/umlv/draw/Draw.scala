@@ -18,6 +18,7 @@ object Draw {
     *                       We have to pass this argument to calculate the ordinates because the origin point of a Graphics context is the
     *                       top left corner (meaning the ordinates are reversed) whereas our origin point is the bottom left corner
     * @param g              the graphic context in which we will draw
+    * @param positionSize   the size of the a position in the graphic context
     */
   def drawMower(mower : Mower, maxOrdinate : Int, g : Graphics, positionSize : Int) : Unit = {
     g.setColor(Color.RED)
@@ -52,8 +53,9 @@ object Draw {
 
   /** Draws a mower in a graphic context.
     *
-    * @param garden   the garden to be drawn
-    * @param g        the graphic context in which we will draw
+    * @param garden         the garden to be drawn
+    * @param g              the graphic context in which we will draw
+    * @param positionSize   the size of a position in the graphic context
     */
   def drawGarden(garden : Garden, g : Graphics, positionSize : Int) : Unit = {
 
