@@ -48,6 +48,11 @@ object main extends App {
   val endGarden = Parser.processMowerList(linesToProcess, garden, 1)
 
   val gardenString = Print.print(endGarden)
+
+  /*
+  We display the garden by using the logger because if we use println, the display might get cut by
+  other log messages.
+   */
   logger.info("\n" + gardenString)
 
   Draw.drawWindow(endGarden)
